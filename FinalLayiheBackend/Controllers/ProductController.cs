@@ -27,10 +27,10 @@ namespace FinalLayiheBackend.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string typeName)
         {
             
-            List<Product> products = _context.Products.Include(p => p.ProductPhotos).Include(p => p.Brand).Where(p => !p.isDeleted).ToList();
+            List<Product> products = _context.Products.Include(p => p.ProductPhotos).Include(p => p.Brand).Where(p => !p.isDeleted && (typeName != null ? p.TypeName.ToLower()  == typeName.ToLower(): true)).ToList();
             List<ProductReturnDto> productReturnDtos = new List<ProductReturnDto>();
             foreach (var item in products)
             {

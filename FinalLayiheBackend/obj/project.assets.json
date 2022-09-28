@@ -5831,11 +5831,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Sahil\\source\\repos\\FinalLayiheBackend\\FinalLayiheBackend\\FinalLayiheBackend.csproj",
+      "projectUniqueName": "C:\\Users\\Sahil\\Desktop\\FinalLayiheBackend\\FinalLayiheBackend\\FinalLayiheBackend.csproj",
       "projectName": "FinalLayiheBackend",
-      "projectPath": "C:\\Users\\Sahil\\source\\repos\\FinalLayiheBackend\\FinalLayiheBackend\\FinalLayiheBackend.csproj",
+      "projectPath": "C:\\Users\\Sahil\\Desktop\\FinalLayiheBackend\\FinalLayiheBackend\\FinalLayiheBackend.csproj",
       "packagesPath": "C:\\Users\\Sahil\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Sahil\\source\\repos\\FinalLayiheBackend\\FinalLayiheBackend\\obj\\",
+      "outputPath": "C:\\Users\\Sahil\\Desktop\\FinalLayiheBackend\\FinalLayiheBackend\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
