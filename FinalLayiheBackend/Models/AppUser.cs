@@ -12,6 +12,6 @@ namespace FinalLayiheBackend.Models
         public string Surname { get; set; }
 
         public List<Comment> Comments { get; set; }
-
+        public List<BasketItem> BasketItems { get; set; }
     }
 }

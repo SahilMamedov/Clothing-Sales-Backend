@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,14 @@ namespace FinalLayiheBackend.Helpers
             Member,
             SuperAdmin
         }
+        public static string DecodeToken(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            if (token == null)
+                return null;
+            var decoded = handler.ReadJwtToken(token.Replace("Bearer ", ""));
 
+            return decoded.Claims.First(claim => claim.Type == "nameid").Value;
+        }
     }
 }

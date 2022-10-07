@@ -30,7 +30,7 @@ namespace FinalLayiheBackend.Controllers
         public IActionResult GetAll(string typeName)
         {
             
-            List<Product> products = _context.Products.Include(p => p.ProductPhotos).Include(p => p.Brand).Where(p => !p.isDeleted && (typeName != null ? p.TypeName.ToLower()  == typeName.ToLower(): true)).ToList();
+            List<Product> products = _context.Products.Include(p => p.ProductPhotos).Include(p=>p.ProductSizes).Include(p => p.Brand).Where(p => !p.isDeleted && (typeName != null ? p.TypeName.ToLower()  == typeName.ToLower(): true)).ToList();
             List<ProductReturnDto> productReturnDtos = new List<ProductReturnDto>();
             foreach (var item in products)
             {
@@ -46,7 +46,7 @@ namespace FinalLayiheBackend.Controllers
                 productReturnDto.Trending = item.Trending;
 
               
-
+               
                 foreach (var photo in item.ProductPhotos)
                 {
                     if (photo.IsMain)

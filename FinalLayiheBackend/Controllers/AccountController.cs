@@ -82,7 +82,7 @@ namespace FinalLayiheBackend.Controllers
             {
                 claims.Add(new Claim("Role", item));
             }
-            string secreKey = "2ee9d5f7-3dd0-4a06-a341-7f7cdc1a7f9c";
+            string secreKey = "2ee5d5f7-3dd0asd-4a06asd-a341-7f3cdc1a7f2c";
             SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secreKey));
             SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -90,8 +90,8 @@ namespace FinalLayiheBackend.Controllers
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddHours(50),
                 SigningCredentials = credentials,
-                Audience = "http://localhost:33033/",
-                Issuer = "http://localhost:33033/"
+                Audience = "http://localhost:14345/",
+                Issuer = "http://localhost:14345/"
 
             };
             var tokenHandler = new JwtSecurityTokenHandler();

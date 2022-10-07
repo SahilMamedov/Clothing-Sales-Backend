@@ -1,5 +1,6 @@
 using FinalLayiheBackend.Data;
 using FinalLayiheBackend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FinalLayiheBackend
 {
@@ -55,6 +57,54 @@ namespace FinalLayiheBackend
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            //    services.AddAuthentication(options =>
+            //    {
+            //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    })
+
+            //// Adding Jwt Bearer
+            //.AddJwtBearer(options =>
+            //         {
+            //             options.SaveToken = true;
+            //             options.RequireHttpsMetadata = false;
+            //             options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+            //             {
+            //                 ValidateIssuer = true,
+            //                 ValidateAudience = true,
+            //                 ValidateIssuerSigningKey = true,
+            //                 ValidateLifetime = true,
+            //                 ValidAudience = Configuration["http://localhost:14345/"],
+            //                 ValidIssuer = Configuration["http://localhost:14345/"],
+            //                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["3awe5d5f7-3dd0-13k06-a341-7f1df23c1a7f2c"]))
+            //             };
+            //         });
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(opt =>
+            {
+                opt.SaveToken = true;
+                opt.RequireHttpsMetadata = false;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidAudience = "http://localhost:14345/",
+                    ValidIssuer = "http://localhost:14345/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("2ee5d5f7-3dd0asd-4a06asd-a341-7f3cdc1a7f2c"))
+
+                };
+
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +116,10 @@ namespace FinalLayiheBackend
             //    app.UseSwagger();
             //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FinalLayiheBackend v1"));
             //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
 
             app.UseCors();
             app.UseRouting();

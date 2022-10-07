@@ -17,12 +17,15 @@ namespace FinalLayiheBackend.Models
         public string TypeName { get; set; }
         public string Color { get; set; }
         public int BrandId { get; set; }
+        public int CategoryId { get; set; }
         public Brand Brand { get; set; }
         public List<Comment> Comments { get; set; }
         public List<ProductPhoto> ProductPhotos { get; set; }
-        public int CategoryId { get; set; }
+ 
         public List<ProductSize> ProductSizes { get; set; }
         public Category Category { get; set; }
+        public List<BasketItem> BasketItems { get; set; }
+        public List<OrderItem> OrderItems { get; set; }
 
     }
 }

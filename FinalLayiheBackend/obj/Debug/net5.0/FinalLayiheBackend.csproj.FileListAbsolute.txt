@@ -118,3 +118,6 @@ C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\obj\Debug\net5.0\Fi
 C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\obj\Debug\net5.0\ref\FinalLayiheBackend.dll
 C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\obj\Debug\net5.0\FinalLayiheBackend.pdb
 C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\obj\Debug\net5.0\FinalLayiheBackend.genruntimeconfig.cache
+C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Sahil\Desktop\FinalLayiheBackend\FinalLayiheBackend\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
