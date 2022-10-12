@@ -4,20 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FinalLayiheBackend.Dtos.ProductDtos.ProductReturnDtos
+namespace FinalLayiheBackend.Dtos.PaginationDtos
 {
-    public class ProductReturnDto
+    public class ShopReturnDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string PhotoPath { get; set; }
         public double Price { get; set; }
-        public double DiscountPrice { get; set; }
-        public string TypeName { get; set; }
+        public Nullable<double> DiscountPrice { get; set; }
         public Nullable<double> Discount { get; set; }
-        public bool IsMainPhoto { get; set; }
-        public bool Trending { get; set; }
-
+        public string Name { get; set; }
+        public string CategoryName { get; set; }
+        public int CategoryId { get; set; }
         public Brand Brand { get; set; }
         public List<ProductPhoto> ProductPhotos { get; set; }
     }

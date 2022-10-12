@@ -39,7 +39,7 @@ namespace FinalLayiheBackend.Controllers
                 productReturnDto.Id = item.Id;
                 productReturnDto.Name = item.Name;
                 productReturnDto.Price = item.Price;
-                productReturnDto.BrandName = item.Brand.Name;
+                productReturnDto.Brand = item.Brand;
                 productReturnDto.Discount = item.Discount;
                 productReturnDto.DiscountPrice = item.Price-(item.Price * item.Discount/100);
                 productReturnDto.TypeName = item.TypeName;

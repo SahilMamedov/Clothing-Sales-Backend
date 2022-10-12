@@ -45,6 +45,9 @@ namespace FinalLayiheBackend.Controllers
             order.Note = saleCreateDto.Note;
             order.Apartment = saleCreateDto.Apartment;
             order.Mobile = saleCreateDto.Mobile;
+            //order.LastName = saleCreateDto.LastName;
+            //order.FirstName = saleCreateDto.FirstName;
+            //order.Email = saleCreateDto.Email;
             order.Cash = saleCreateDto.Cash;
             order.City = saleCreateDto.City;
             order.CreatedAt = DateTime.Now;
@@ -102,9 +105,11 @@ namespace FinalLayiheBackend.Controllers
                 {
                     Id = x.Id,
                     Name = x.Product.Name,
+                    Photo = x.Product.ProductPhotos.FirstOrDefault(p => p.IsMain),
                     Count = x.Count,
                     Total = x.Total,
-                    ProductPhotos = x.Product.ProductPhotos
+                    
+                  
                 }).ToList();
 
             return Ok(OrderItemReturnDto);
@@ -124,7 +129,7 @@ namespace FinalLayiheBackend.Controllers
                 {
                     Id = x.Id,
                     Total = x.OrderItems.Select(i => i.Total).Sum(),
-                    Date = x.CreatedAt.ToString("MM/dd/yyyy HH:mm"),
+                    Date = x.CreatedAt.ToString("dd/MM/yyyy HH:mm"),
                     OrderStatus = x.OrderStatus
                     
                 }).ToList();

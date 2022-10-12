@@ -12,7 +12,8 @@ namespace FinalLayiheBackend.Dtos.SaleDtos
         public double Total { get; set; }
         public int Count { get; set; }
         public string Name { get; set; }
-        public List<ProductPhoto> ProductPhotos { get; set; }
+        public string Color { get; set; }
+        public ProductPhoto Photo { get; set; }
 
     }
 }

@@ -29,7 +29,7 @@ namespace FinalLayiheBackend.Controllers
 
             Comment comment = new Comment()
             {
-                CreateTime = commentCreateDto.CreateTime,
+                CreateTime =DateTime.Now,
                 AppUserId = commentCreateDto.AppUserId,
                 Content = commentCreateDto.Content,
                 ProductId = commentCreateDto.ProductId

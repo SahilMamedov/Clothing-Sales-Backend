@@ -41,10 +41,10 @@ namespace FinalLayiheBackend.Controllers
             }
             user = new AppUser
             {
-                UserName = registerDto.Email,
-                Name = registerDto.Name.ToLower(),
+                UserName = registerDto.Username,
+                Name = registerDto.Name,
                 Email = registerDto.Email,
-                Surname = registerDto.Surname.ToLower(),
+                Surname = registerDto.Surname,
             };
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             if (!result.Succeeded)
@@ -101,6 +101,46 @@ namespace FinalLayiheBackend.Controllers
 
 
         }
+
+
+        [HttpPut("updateUser")]
+        public async Task<IActionResult> UpdateUser([FromForm]UpdateUserDto updateUserDto)
+        {
+            AppUser user = await _userManager.FindByNameAsync(updateUserDto.UserName);
+            user.Name = updateUserDto.FirstName;
+            user.Surname = updateUserDto.Surname;
+            user.Email = updateUserDto.Email;
+            _context.SaveChanges();
+
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim("Name", user.Name));
+            claims.Add(new Claim("Surname", user.Surname));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            claims.Add(new Claim("Email", user.Email));
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var item in roles)
+            {
+                claims.Add(new Claim("Role", item));
+            }
+            string secreKey = "2ee5d5f7-3dd0asd-4a06asd-a341-7f3cdc1a7f2c";
+            SymmetricSecurityKey key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(secreKey));
+            SigningCredentials credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddHours(50),
+                SigningCredentials = credentials,
+                Audience = "http://localhost:14345/",
+                Issuer = "http://localhost:14345/"
+
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return Ok(new { token = tokenHandler.WriteToken(token) });
+        }
+
         [HttpGet("users")]
 
         public IActionResult GetUser()
