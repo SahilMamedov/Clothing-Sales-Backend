@@ -11,6 +11,7 @@ namespace FinalLayiheBackend.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
+        public double DiscountPrice { get; set; }
         public bool isDeleted { get; set; }
         public Nullable<DateTime> CreatedDate { get; set; }
         public bool Trending { get; set; }

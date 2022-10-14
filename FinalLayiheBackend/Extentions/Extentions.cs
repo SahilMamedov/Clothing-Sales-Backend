@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FinalLayiheBackend.Extentions
 {
-    public static class Extention
+    public static class Extentions
     {
         public static bool IsImage(this IFormFile file)
         {

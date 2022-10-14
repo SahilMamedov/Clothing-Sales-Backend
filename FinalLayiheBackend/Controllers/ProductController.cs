@@ -221,16 +221,16 @@ namespace FinalLayiheBackend.Controllers
                 Color=productCreateDto.Color,
 
 
-                ProductSizes = new List<ProductSize>
-                {
-                    new ProductSize
-                    {
-                        Sizes= new Size
-                        {
-                            Sizes=productCreateDto.Size
-                        }
-                    }
-                },
+                //ProductSizes = new List<ProductSize>
+                //{
+                //    new ProductSize
+                //    {
+                //        Sizes= new Size
+                //        {
+                //            Sizes=productCreateDto.Size
+                //        }
+                //    }
+                //},
 
 
             };

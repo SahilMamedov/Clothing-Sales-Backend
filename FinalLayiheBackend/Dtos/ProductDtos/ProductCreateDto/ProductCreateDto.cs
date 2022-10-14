@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FinalLayiheBackend.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductCreateDto
         public int BrandId { get; set; }
         public int CategoryId { get; set; }
         public bool IsDeleted { get; set; }
-        public string Size { get; set; }
         public bool Trending { get; set; }
         public List<IFormFile> ChildPhotos { get; set; }
         public IFormFile Photos { get; set; }
+        public List<string> Sizes  { get; set; }
         public string Color { get; set; }
         public string TypeName { get; set; }
 
