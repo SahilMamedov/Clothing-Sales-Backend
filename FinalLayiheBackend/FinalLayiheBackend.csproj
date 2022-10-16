@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\AdminProductController.cs" />
     <Content Remove="wwwroot\img\ProductCreateDto.cs" />
   </ItemGroup>
 

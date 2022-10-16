@@ -116,13 +116,13 @@ namespace FinalLayiheBackend.Controllers.AdminController
                 Name = productCreateDto.Name,
                 Price = productCreateDto.Price,
                 Discount = productCreateDto.Discount,
-                DiscountPrice= productCreateDto.Price - (productCreateDto.Price * productCreateDto.Discount / 100),
+                DiscountPrice = productCreateDto.Price - (productCreateDto.Price * productCreateDto.Discount / 100),
                 BrandId = productCreateDto.BrandId,
                 CategoryId = productCreateDto.CategoryId,
-                Trending=productCreateDto.Trending,
-                TypeName=productCreateDto.TypeName,
-                Color=productCreateDto.Color,
-                ProductPhotos=photos,
+                Trending = productCreateDto.Trending,
+                TypeName = productCreateDto.TypeName,
+                Color = productCreateDto.Color,
+                ProductPhotos = photos,
                 CreatedDate = DateTime.Now,
             };
             newProduct.ProductSizes = new List<ProductSize>();
@@ -135,7 +135,7 @@ namespace FinalLayiheBackend.Controllers.AdminController
                 newProduct.ProductSizes.Add(productSize);
 
             }
-        
+
 
             _context.Add(newProduct);
             _context.SaveChanges();
@@ -149,15 +149,15 @@ namespace FinalLayiheBackend.Controllers.AdminController
             IQueryable<ProductReturnAdminDto> query = _context.Products.Include(x => x.Brand).Include(x => x.Category).Where(x => !x.isDeleted).Select(p => new ProductReturnAdminDto
             {
                 Id = p.Id,
-                Photo= p.ProductPhotos.FirstOrDefault(p => p.IsMain),
+                Photo = p.ProductPhotos.FirstOrDefault(p => p.IsMain),
                 Name = p.Name,
                 Price = p.Price,
                 Discount = p.Discount,
                 Color = p.Color,
                 Trending = p.Trending,
-                Typename=p.TypeName,
-                Brand=p.Brand,
-                Category=p.Category
+                Typename = p.TypeName,
+                Brand = p.Brand,
+                Category = p.Category
             });
 
 
@@ -177,9 +177,9 @@ namespace FinalLayiheBackend.Controllers.AdminController
             Product dbproduct = _context.Products.Include(p => p.ProductPhotos).FirstOrDefault(p => p.Id == id);
             foreach (var item in dbproduct.ProductPhotos)
             {
-                string path = Path.Combine(_env.WebRootPath, "img", item.Path.Substring("http://localhost:33033/img/".Length));
+                string path = Path.Combine(_env.WebRootPath, "img", item.Path.Substring("http://localhost:14345/img/".Length));
 
-                if (dbproduct == null)
+                //if (dbproduct == null)
                     Helper.DeleteImage(path);
             }
 
@@ -206,27 +206,27 @@ namespace FinalLayiheBackend.Controllers.AdminController
             Product product = _context.Products.Include(p => p.ProductPhotos)
                 .Include(x => x.Brand)
                 .Include(x => x.ProductSizes)
-                .ThenInclude(x=>x.Sizes)
+                .ThenInclude(x => x.Sizes)
                 .Include(x => x.Category)
                 .FirstOrDefault(x => x.Id == id);
 
             GetOneProductAdminDto getOneProductAdminDto = new GetOneProductAdminDto()
             {
-                
+
                 ProductPhotos = product.ProductPhotos.Select(x => new ProductPhoto
                 {
                     Path = x.Path,
                     IsMain = x.IsMain,
-                    
+
 
                 }).ToList(),
 
-                size=product.ProductSizes.Select(s => new Size 
+                size = product.ProductSizes.Select(s => new Size
                 {
 
                     Sizes = s.Sizes.Sizes,
-                     Id = s.SIzeId
-                    
+                    Id = s.SIzeId
+
                 }).ToList(),
 
                 Id = product.Id,
@@ -234,10 +234,10 @@ namespace FinalLayiheBackend.Controllers.AdminController
                 Price = product.Price,
                 Discount = product.Discount,
                 Typename = product.TypeName,
-                Trending=product.Trending,
+                Trending = product.Trending,
                 Brand = product.Brand,
                 Category = product.Category,
-                Color=product.Color
+                Color = product.Color
 
             };
 
@@ -246,17 +246,140 @@ namespace FinalLayiheBackend.Controllers.AdminController
         }
 
 
+        //[HttpPut("updateProduct")]
+        //[Authorize]
+        //public async Task<IActionResult> Update([FromForm] ProductCreateDto product)
+        //{
+        //    List<ProductPhoto> productImages = new List<ProductPhoto>();
+
+
+        //    Product dbProducts = _context.Products.Include(p => p.ProductPhotos).Include(x => x.Brand).Include(x => x.Category).FirstOrDefault(c => c.Id == product.Id);
+        //    Product productName = _context.Products.FirstOrDefault(p => p.Name.ToLower() == dbProducts.Name.ToLower());
+
+        //    if (product.Photos != null)
+        //    {
+        //        foreach (var item in product.ChildPhotos)
+        //        {
+
+        //            if (item == null)
+        //            {
+
+        //                return BadRequest("Bosqoyma");
+        //            }
+        //            if (!item.IsImage())
+        //            {
+
+        //                return BadRequest("only Photo");
+
+        //            }
+        //            if (item.ValidSize(200))
+        //            {
+        //                return BadRequest("olcu uygun deyil");
+        //            }
+
+
+        //        }
+
+        //        if (product.Photos == null)
+        //        {
+
+        //            return BadRequest("Bosqoyma");
+        //        }
+        //        if (!product.Photos.IsImage())
+        //        {
+
+        //            return BadRequest("only Photo");
+
+        //        }
+        //        if (product.Photos.ValidSize(200))
+        //        {
+        //            return BadRequest("olcu uygun deyil");
+        //        }
+
+
+
+        //    }
+        //    if (productName != null)
+        //    {
+        //        if (productName.Name != dbProducts.Name)
+        //        {
+        //            return BadRequest("bu adli product var ");
+        //        }
+        //    }
+
+
+        //    dbProducts.Name = product.Name;
+        //    dbProducts.Price = product.Price;
+        //    dbProducts.Discount = product.Discount;
+        //    dbProducts.Color = product.Color;
+        //    dbProducts.Trending = product.Trending;
+        //    dbProducts.TypeName = product.TypeName;
+        //    dbProducts.BrandId = product.BrandId;
+        //    dbProducts.CategoryId = product.CategoryId;
+
+
+        //    await _context.SaveChangesAsync();
+        //    return Ok();
+
+
+        //}
+
+
         [HttpPut("updateProduct")]
         [Authorize]
-        public async Task<IActionResult> Update([FromForm]ProductCreateDto product)
+        public async Task<IActionResult> Update([FromForm] ProductCreateDto product)
         {
             List<ProductPhoto> productImages = new List<ProductPhoto>();
 
+            List<ProductSize> productSizes = new List<ProductSize>();
 
-            Product dbProducts = _context.Products.Include(p => p.ProductPhotos).Include(x => x.Brand).Include(x => x.Category).FirstOrDefault(c => c.Id == product.Id);
+            Product dbProducts = _context.Products
+                .Include(p => p.ProductPhotos)
+                .Include(x => x.ProductSizes)
+                .ThenInclude(x => x.Sizes)
+                .FirstOrDefault(c => c.Id == product.Id);
             Product productName = _context.Products.FirstOrDefault(p => p.Name.ToLower() == dbProducts.Name.ToLower());
-           
+
             if (product.Photos != null)
+            {
+
+
+                if (product.Photos == null)
+                {
+
+                    return BadRequest("Bosqoyma");
+                }
+                if (!product.Photos.IsImage())
+                {
+
+                    return BadRequest("only Photo");
+
+                }
+                if (product.Photos.ValidSize(200))
+                {
+                    return BadRequest("olcu uygun deyil");
+                }
+                foreach (var item in dbProducts.ProductPhotos)
+                {
+                    if (item.IsMain)
+                    {
+                        string path = Path.Combine(_env.WebRootPath, "img", item.Path.Substring("http://localhost:14345/img/".Length));
+                        System.IO.File.Delete(path);
+                    }
+
+                }
+
+                ProductPhoto photo = new ProductPhoto
+                {
+                    Path = "http://localhost:14345/img/" + product.Photos.SaveImage(_env, "img"),
+                    IsMain = true
+                };
+                productImages.Add(photo);
+
+            }
+
+
+            if (product.ChildPhotos != null)
             {
                 foreach (var item in product.ChildPhotos)
                 {
@@ -277,28 +400,31 @@ namespace FinalLayiheBackend.Controllers.AdminController
                         return BadRequest("olcu uygun deyil");
                     }
 
+                }
+                foreach (var item in dbProducts.ProductPhotos)
+                {
+                    if (!item.IsMain)
+                    {
+                        string path = Path.Combine(_env.WebRootPath, "img", item.Path.Substring("http://localhost:14345/img/".Length));
+                        System.IO.File.Delete(path);
+                    }
 
                 }
-
-                if (product.Photos == null)
+                foreach (var item in product.ChildPhotos)
                 {
 
-                    return BadRequest("Bosqoyma");
+                    ProductPhoto photo = new ProductPhoto
+                    {
+                        Path = "http://localhost:14345/img/" + item.SaveImage(_env, "img"),
+                        IsMain = false
+                    };
+                    productImages.Add(photo);
                 }
-                if (!product.Photos.IsImage())
-                {
-
-                    return BadRequest("only Photo");
-
-                }
-                if (product.Photos.ValidSize(200))
-                {
-                    return BadRequest("olcu uygun deyil");
-                }
-
 
 
             }
+
+
             if (productName != null)
             {
                 if (productName.Name != dbProducts.Name)
@@ -307,8 +433,12 @@ namespace FinalLayiheBackend.Controllers.AdminController
                 }
             }
 
+            if (product.ChildPhotos != null && product.Photos != null)
+            {
+                dbProducts.ProductPhotos = productImages;
+            }
 
-            dbProducts.Name = product.Name;
+             dbProducts.Name = product.Name;
             dbProducts.Price = product.Price;
             dbProducts.Discount = product.Discount;
             dbProducts.Color = product.Color;
@@ -316,13 +446,23 @@ namespace FinalLayiheBackend.Controllers.AdminController
             dbProducts.TypeName = product.TypeName;
             dbProducts.BrandId = product.BrandId;
             dbProducts.CategoryId = product.CategoryId;
-            
 
+            foreach (var item in product.Sizes)
+            {
+                ProductSize productSize = new ProductSize();
+                Size size = new Size();
+                size.Sizes = item;
+                productSize.Sizes = size;
+                productSizes.Add(productSize);
+
+            }
+          
+
+            dbProducts.ProductSizes = productSizes;
             await _context.SaveChangesAsync();
             return Ok();
 
 
         }
-
     }
 }
