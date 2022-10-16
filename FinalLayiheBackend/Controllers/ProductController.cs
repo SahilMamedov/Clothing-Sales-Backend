@@ -63,20 +63,72 @@ namespace FinalLayiheBackend.Controllers
             return Ok(productReturnDtos);
         }
 [HttpGet("{id}")]
+        //public IActionResult GetOne(int id)
+        //{
+        //    Product product = _context.Products
+        //        .Include(p=>p.ProductPhotos)
+        //        .Include(p=>p.Brand)
+        //        .Include(p=>p.Category)
+        //        .Include(p=>p.ProductSizes)
+        //        .ThenInclude(p=>p.Sizes)
+        //        .FirstOrDefault(p => p.Id == id && !p.isDeleted);
+
+
+
+
+        //    return Ok(product);
+        //}
+
+
         public IActionResult GetOne(int id)
         {
-            Product product = _context.Products
-                .Include(p=>p.ProductPhotos)
-                .Include(p=>p.Brand)
-                .Include(p=>p.Category)
-                .Include(p=>p.ProductSizes)
-                .FirstOrDefault(p => p.Id == id && !p.isDeleted);
+            Product product = _context.Products.Include(p => p.ProductPhotos)
+                .Include(x => x.Brand)
+                .Include(x => x.ProductSizes)
+                .ThenInclude(x => x.Sizes)
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == id);
 
-           
+            GetOneReturnProductDto getOneReturnProductDto = new GetOneReturnProductDto()
+            {
+
+                ProductPhotos = product.ProductPhotos.Select(x => new ProductPhoto
+                {
+                    Path = x.Path,
+                    IsMain = x.IsMain,
 
 
-            return Ok(product);
+                }).ToList(),
+
+                size = product.ProductSizes.Select(s => new Size
+                {
+
+                    Sizes = s.Sizes.Sizes,
+                    Id = s.SIzeId
+
+                }).ToList(),
+
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Discount = product.Discount,
+                Typename = product.TypeName,
+                Trending = product.Trending,
+                Brand = product.Brand,
+                Category = product.Category,
+                Color = product.Color
+
+            };
+
+
+            return Ok(getOneReturnProductDto);
         }
+
+
+
+
+
+
 
         //[HttpGet("bestSelling")]
         //public IActionResult GetBestSellingProduct()

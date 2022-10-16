@@ -1,5 +1,4 @@
-﻿using FinalLayiheBackend.Models;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductCreateDto
         public bool Trending { get; set; }
         public List<IFormFile> ChildPhotos { get; set; }
         public IFormFile Photos { get; set; }
-        public List<string> Sizes  { get; set; }
+        public List<string> Sizes { get; set; }
         public string Color { get; set; }
         public string TypeName { get; set; }
 
@@ -31,7 +30,7 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductCreateDto
             {
                 RuleFor(x => x.Name).NotEmpty().WithMessage("bosh qoyma");
 
-                
+
             }
         }
     }

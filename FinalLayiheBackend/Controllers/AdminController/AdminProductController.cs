@@ -177,10 +177,10 @@ namespace FinalLayiheBackend.Controllers.AdminController
             Product dbproduct = _context.Products.Include(p => p.ProductPhotos).FirstOrDefault(p => p.Id == id);
             foreach (var item in dbproduct.ProductPhotos)
             {
-                string path = Path.Combine(_env.WebRootPath, "img", item.Path);
+                string path = Path.Combine(_env.WebRootPath, "img", item.Path.Substring("http://localhost:33033/img/".Length));
 
-               
-                 Helper.DeleteImage(path);
+                if (dbproduct == null)
+                    Helper.DeleteImage(path);
             }
 
             foreach (var item in basketItems)
@@ -197,20 +197,36 @@ namespace FinalLayiheBackend.Controllers.AdminController
         }
 
 
+
+
         [HttpGet("getOne")]
 
         public IActionResult GetOne(int id)
         {
-            Product product = _context.Products.Include(p => p.ProductPhotos).Include(x => x.Brand).Include(x => x.Category).FirstOrDefault(x => x.Id == id);
+            Product product = _context.Products.Include(p => p.ProductPhotos)
+                .Include(x => x.Brand)
+                .Include(x => x.ProductSizes)
+                .ThenInclude(x=>x.Sizes)
+                .Include(x => x.Category)
+                .FirstOrDefault(x => x.Id == id);
 
-            ProductReturnUpdateAdminDto productUpdateDto = new ProductReturnUpdateAdminDto()
+            GetOneProductAdminDto getOneProductAdminDto = new GetOneProductAdminDto()
             {
+                
                 ProductPhotos = product.ProductPhotos.Select(x => new ProductPhoto
                 {
                     Path = x.Path,
                     IsMain = x.IsMain,
                     
 
+                }).ToList(),
+
+                size=product.ProductSizes.Select(s => new Size 
+                {
+
+                    Sizes = s.Sizes.Sizes,
+                     Id = s.SIzeId
+                    
                 }).ToList(),
 
                 Id = product.Id,
@@ -226,7 +242,7 @@ namespace FinalLayiheBackend.Controllers.AdminController
             };
 
 
-            return Ok(productUpdateDto);
+            return Ok(getOneProductAdminDto);
         }
 
 
@@ -239,7 +255,7 @@ namespace FinalLayiheBackend.Controllers.AdminController
 
             Product dbProducts = _context.Products.Include(p => p.ProductPhotos).Include(x => x.Brand).Include(x => x.Category).FirstOrDefault(c => c.Id == product.Id);
             Product productName = _context.Products.FirstOrDefault(p => p.Name.ToLower() == dbProducts.Name.ToLower());
-           // Brand brandname = _context.Brands.FirstOrDefault(b => b.Name == dbProducts.Brand.Name);
+           
             if (product.Photos != null)
             {
                 foreach (var item in product.ChildPhotos)
