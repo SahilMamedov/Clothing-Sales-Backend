@@ -37,7 +37,7 @@ namespace FinalLayiheBackend.Controllers
             AppUser user = await _userManager.FindByEmailAsync(registerDto.Email);
             if (user != null)
             {
-                return BadRequest("Bu email artiq movcuddur");
+                return BadRequest("Error: This email is already available");
             }
             user = new AppUser
             {
@@ -65,11 +65,11 @@ namespace FinalLayiheBackend.Controllers
             AppUser user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
-                return NotFound("İstifadəçi tapılmadı");
+                return NotFound("Error: User not found");
             }
             if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
-                return BadRequest("Xəta baş verib: The username or password you entered is incorrect. Please check the username, re-type the password, and try again.");
+                return BadRequest("Error: The password entered is incorrect.!");
             }
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
@@ -106,10 +106,11 @@ namespace FinalLayiheBackend.Controllers
         [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser([FromForm]UpdateUserDto updateUserDto)
         {
-            AppUser user = await _userManager.FindByNameAsync(updateUserDto.UserName);
+            AppUser user = await _userManager.FindByIdAsync(updateUserDto.Id);
             user.Name = updateUserDto.FirstName;
             user.Surname = updateUserDto.Surname;
             user.Email = updateUserDto.Email;
+            user.UserName = updateUserDto.UserName;
             _context.SaveChanges();
 
             List<Claim> claims = new List<Claim>();

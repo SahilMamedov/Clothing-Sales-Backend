@@ -43,7 +43,7 @@ namespace FinalLayiheBackend.Controllers
 
 
         [HttpGet("filter")]
-        public async Task<IActionResult> GetProduct([FromQuery] int?[] brandIds,[FromQuery] int?[] categoryIds, double minPrice=0, double maxPrice=100, int page = 1, int size = 12)
+        public async Task<IActionResult> GetProduct([FromQuery] int?[] brandIds,[FromQuery] int?[] categoryIds,string? typeName, double minPrice=0, double maxPrice=100, int page = 1, int size = 24)
         {
             IQueryable<ShopReturnDto> query = _context.Products
                 .Include(p => p.ProductPhotos)
@@ -54,6 +54,7 @@ namespace FinalLayiheBackend.Controllers
                             && p.Price - (p.Price * p.Discount / 100) <= maxPrice
                             && (brandIds.Length == 0 ? true : brandIds.Contains(p.BrandId))
                             && (categoryIds.Length == 0 ? true : categoryIds.Contains(p.CategoryId))
+                            && (typeName != null ? p.TypeName.ToLower() == typeName.ToLower() : true)
                             )
                 .Select(x => new ShopReturnDto
                 {
@@ -63,6 +64,8 @@ namespace FinalLayiheBackend.Controllers
                     Discount = x.Discount,
                     DiscountPrice = x.Price - (x.Price * x.Discount / 100),
                     Brand=x.Brand,
+                    TypeName=x.TypeName,
+                    
                     
 
 

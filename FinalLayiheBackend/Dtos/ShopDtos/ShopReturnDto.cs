@@ -14,6 +14,7 @@ namespace FinalLayiheBackend.Dtos.PaginationDtos
         public Nullable<double> Discount { get; set; }
         public string Name { get; set; }
         public string CategoryName { get; set; }
+        public string TypeName { get; set; }
         public int CategoryId { get; set; }
         public Brand Brand { get; set; }
         public List<ProductPhoto> ProductPhotos { get; set; }

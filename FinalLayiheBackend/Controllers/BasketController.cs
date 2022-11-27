@@ -100,7 +100,9 @@ namespace FinalLayiheBackend.Controllers
 
             foreach (var item in basketItems)
             {
+
                 total += item.Sum;
+               
             }
             obj = new
             {

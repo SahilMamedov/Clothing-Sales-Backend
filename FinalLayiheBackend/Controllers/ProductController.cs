@@ -62,23 +62,8 @@ namespace FinalLayiheBackend.Controllers
 
             return Ok(productReturnDtos);
         }
-[HttpGet("{id}")]
-        //public IActionResult GetOne(int id)
-        //{
-        //    Product product = _context.Products
-        //        .Include(p=>p.ProductPhotos)
-        //        .Include(p=>p.Brand)
-        //        .Include(p=>p.Category)
-        //        .Include(p=>p.ProductSizes)
-        //        .ThenInclude(p=>p.Sizes)
-        //        .FirstOrDefault(p => p.Id == id && !p.isDeleted);
-
-
-
-
-        //    return Ok(product);
-        //}
-
+        [HttpGet("{id}")]
+     
 
         public IActionResult GetOne(int id)
         {
@@ -88,7 +73,7 @@ namespace FinalLayiheBackend.Controllers
                 .ThenInclude(x => x.Sizes)
                 .Include(x => x.Category)
                 .FirstOrDefault(x => x.Id == id);
-
+            ProductPhoto productImage = product.ProductPhotos.FirstOrDefault(p => p.ProductId == id && p.IsMain);
             GetOneReturnProductDto getOneReturnProductDto = new GetOneReturnProductDto()
             {
 
@@ -114,6 +99,7 @@ namespace FinalLayiheBackend.Controllers
                 Discount = product.Discount,
                 Typename = product.TypeName,
                 Trending = product.Trending,
+                isMainImage= productImage.Path,
                 Brand = product.Brand,
                 Category = product.Category,
                 Color = product.Color
@@ -128,70 +114,91 @@ namespace FinalLayiheBackend.Controllers
 
 
 
+        [HttpGet("similarProducts")]
+        public IActionResult GetAllSimilarProduct(int categoryId)
+        {
+            IQueryable<GetOneReturnProductDto> query = _context.Products
+               .Include(p => p.ProductPhotos)
+               .Include(p => p.Brand)
+               .Include(p => p.Category)
+               .Include(p=>p.ProductSizes)
+               .ThenInclude(p=>p.Sizes)
+               .Where(x => x.CategoryId == categoryId && !x.isDeleted)
+               .Select(x => new GetOneReturnProductDto
+               {
+                   Id = x.Id,
+                   Name = x.Name,
+                   Price = x.Price,
+                   Discount = x.Discount,
+                   Typename = x.TypeName,
+                   Trending = x.Trending,
+                   Brand = x.Brand,
+                   Category = x.Category,
+                   
+                   Color = x.Color,
+                   DiscountPrice = x.Price - (x.Price * x.Discount / 100),
 
 
-        //[HttpGet("bestSelling")]
-        //public IActionResult GetBestSellingProduct()
-        //{
-        //    IQueryable<ProductReturnDto> query = _context.Ratings
-        //      .Include(r => r.Product)
-        //        .ThenInclude(p => p.Photos)
-        //        .Include(r => r.Product)
-        //        .ThenInclude(p => p.Category)
-
-        //        .Where(r => r.Avarge > 1 && !r.Product.isDeleted)
-        //      .Select(x => new ProductReturnDto
-        //      {
-        //          Id = x.ProductId,
-        //          Title = x.Product.Title,
-        //          Description = x.Product.Description,
-        //          NewPrice = x.Product.NewPrice,
-        //          OldPrice = x.Product.OldPrice,
-        //          CategoryTitle = x.Product.Category.Title,
-        //          inStock = x.Product.inStock,
-        //          Photos = x.Product.Photos.Select(x => new Photo
-        //          {
-        //              Id = x.ProductId,
-        //              Path = x.Path,
-        //              IsMain = x.IsMain
-
-        //          }).ToList()
-        //      });
-        //    var result = query.ToList();
-
-        //    return Ok(result);
-        //}
-
-        //[HttpGet("newArrival")]
-        //public IActionResult GetNewArrivalProduct()
-        //{
-        //    var from = DateTime.UtcNow.AddDays(-20);
-        //    IQueryable<ProductReturnDto> query = _context.Products
-        //         .Include(p => p.Category)
-        //        .Where(p => p.CreatedDate >= from)
-        //      .Select(x => new ProductReturnDto
-        //      {
-        //          Id = x.Id,
-        //          Title = x.Title,
-        //          Description = x.Description,
-        //          NewPrice = x.NewPrice,
-        //          OldPrice = x.OldPrice,
-        //          CategoryTitle = x.Category.Title,
-        //          inStock = x.inStock,
-        //          Photos = x.Photos.Select(x => new Photo
-        //          {
-        //              Id = x.ProductId,
-        //              Path = x.Path,
-        //              IsMain = x.IsMain
-
-        //          }).ToList()
-        //      });
-        //    var result = query.ToList();
-
-        //    return Ok(result);
 
 
-        //}
+    
+
+            ProductPhotos = x.ProductPhotos.Select(x => new ProductPhoto
+                    {
+                        Path = x.Path,
+                        IsMain = x.IsMain,
+
+
+                    }).ToList(),
+
+                   size = x.ProductSizes.Select(s => new Size
+                   {
+
+                       Sizes = s.Sizes.Sizes,
+                       Id = s.SIzeId
+
+                   }).ToList(),
+
+
+
+               });
+            var result = query.ToList();
+            return Ok(result);
+        }
+
+        [HttpGet("newArrivalGoods")]
+        public IActionResult GetNewArrivalProduct()
+        {
+            var from = DateTime.UtcNow.AddDays(-10);
+            IQueryable<ProductReturnDto> query = _context.Products
+
+                 .Include(p => p.Brand)
+                 .Include(p=>p.ProductPhotos)
+                .Where(p => p.CreatedDate >= from)
+
+              .Select(x => new ProductReturnDto
+              {
+                  Id = x.Id,
+                  Name = x.Name,
+                  Price = x.Price,
+                  Discount = x.Discount,
+                  DiscountPrice = x.Price - (x.Price * x.Discount / 100),
+                  Brand = x.Brand,
+                  ProductPhotos = x.ProductPhotos.Select(x => new ProductPhoto
+                  {
+                      Path = x.Path,
+                      IsMain = x.IsMain,
+
+
+                  }).ToList(),
+
+              });
+            var result = query.ToList();
+
+            return Ok(result);
+
+
+        }
 
 
         [HttpPost("createProduct")]
@@ -292,41 +299,7 @@ namespace FinalLayiheBackend.Controllers
             return StatusCode(201);
         }
 
-        //[HttpGet("brandAndCategoryIds")]
-        //public IActionResult GetBrandAndCategoryId()
-        //{
-        //    List<Brand> dbBrands = _context.Brand.Where(b => !b.IsDeleted).ToList();
 
-        //    List<Category> dbCategory = _context.Categories.ToList();
-
-        //    var obj = new
-        //    {
-        //        Brand = dbBrands,
-        //        Category = dbCategory
-        //    };
-        //    return Ok(obj);
-        //}
-
-        //[HttpPut]
-        //public IActionResult Update(Product product)
-        //{
-        //    return StatusCode(200);
-        //}
-
-
-
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //    Product p = _context.Products.FirstOrDefault(p => p.Id == id);
-        //    if (p == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    p.isDeleted = true;
-        //    _context.SaveChanges();
-        //    return StatusCode(200);
-        //}
 
     }
 }

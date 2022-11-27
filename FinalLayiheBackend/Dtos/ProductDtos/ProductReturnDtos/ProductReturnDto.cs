@@ -17,7 +17,7 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductReturnDtos
         public Nullable<double> Discount { get; set; }
         public bool IsMainPhoto { get; set; }
         public bool Trending { get; set; }
-
+        public ProductPhoto Photo { get; set; }
         public Brand Brand { get; set; }
         public List<ProductPhoto> ProductPhotos { get; set; }
     }

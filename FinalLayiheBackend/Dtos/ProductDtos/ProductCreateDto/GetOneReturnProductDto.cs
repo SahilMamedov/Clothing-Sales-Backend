@@ -12,6 +12,8 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductCreateDto
         public string Name { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
+        public string isMainImage { get; set; }
+        public double DiscountPrice { get; set; }
         public string Typename { get; set; }
         public string Color { get; set; }
         public Brand Brand { get; set; }

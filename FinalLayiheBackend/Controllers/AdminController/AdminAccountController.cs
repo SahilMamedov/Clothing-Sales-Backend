@@ -35,11 +35,11 @@ namespace FinalLayiheBackend.Controllers.AdminController
             AppUser user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
-                return NotFound("İstifadəçi tapılmadı");
+                return NotFound("Error: User not found");
             }
             if (!await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
-                return BadRequest("Xəta baş verib: The username or password you entered is incorrect. Please check the username, re-type the password, and try again.");
+                return BadRequest("Error: The password entered is incorrect.!");
             }
             List<Claim> claims = new List<Claim>();
             var roles = await _userManager.GetRolesAsync(user);
@@ -68,7 +68,7 @@ namespace FinalLayiheBackend.Controllers.AdminController
                 return Ok(new { token = tokenHandler.WriteToken(token) });
             }
 
-            return BadRequest("Xəta baş verib: Admin deyilsiniz");
+            return BadRequest("Error: Unfortunately only Admin can access");
 
         }
     }

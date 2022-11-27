@@ -12,6 +12,7 @@ namespace FinalLayiheBackend.Dtos.ProductDtos.ProductReturnDtos
         public string Name { get; set; }
         public double Price { get; set; }
         public double Discount { get; set; }
+
         public string Typename { get; set; }
         public string Color { get; set; }
         public Brand Brand { get; set; }
